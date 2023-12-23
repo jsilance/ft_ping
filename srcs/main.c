@@ -39,8 +39,12 @@ int main(int argc, char **argv)
 		ft_exit(MALLOC_ERROR, g_ping, NULL);
 
 	// define fd of socket
+	g_ping->socket_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+	if (g_ping->socket_fd < 0)
+		ft_exit(UNKNOWN_ERROR, g_ping, g_packet);
 	// define protocol and type of socket
 
 	ft_ping(g_ping, g_packet);
+	ft_exit(NO_ERROR, g_ping, g_packet);
 	return (0);
 }

@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 enum e_error_code
 {

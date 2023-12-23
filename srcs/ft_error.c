@@ -44,6 +44,7 @@ void ft_exit(int code, t_ping *ping, t_packet *packet)
 		printf("\033[0;31mUsage: ./ft_ping <option> <host>\033[0m\n");
 	if (ping)
 	{
+		close(ping->socket_fd);
 		ft_bzero(ping, sizeof(t_ping));
 		free(ping);
 	}
