@@ -1,5 +1,23 @@
 #include "ft_ping.h"
 
+void set_header(t_packet *packet)
+{
+	// type 8
+	packet->header = 8;
+	// code 16
+	packet->header <<= 8;
+	packet->header += 8;
+	// checksum 32
+	packet->header <<= 16;
+	packet->header += 0;
+	// id 48
+	packet->header <<= 16;
+	packet->header += 0;
+	// seq 64
+	packet->header <<= 16;
+	packet->header += packet->seq;
+}
+
 t_ping *init_ping(int argc, char **argv)
 {
 	t_ping *ping;
@@ -25,5 +43,6 @@ t_packet *init_packet(void)
 		return (NULL);
 	ft_bzero(packet, sizeof(t_packet));
 	packet->seq = 1;
+	set_header(packet);
 	return (packet);
 }

@@ -23,16 +23,16 @@ enum e_error_code
 
 typedef struct	s_ping
 {
-	int		argc;
-	char	**argv;
-	char	*host;
-	char	arg;
+	int				argc;
+	char			**argv;
+	char			*host;
+	char			arg;
 
-	int		socket_fd;
+	int				socket_fd;
 
-	int		packet_received;
-	int		packet_transmitted;
-	int		packet_loss;
+	int				packet_received;
+	int				packet_transmitted;
+	int				packet_loss;
 
 	struct timeval	start;
 	struct timeval	end;
@@ -41,11 +41,13 @@ typedef struct	s_ping
 
 typedef struct	s_packet
 {
-	int				seq;
+	int					seq;
 
-	struct timeval	start;
-	struct timeval	end;
-	long double		time;
+	unsigned long long	header;
+
+	struct timeval		start;
+	struct timeval		end;
+	long double			time;
 }				t_packet;
 
 int			ft_strcmp(const char *s1, const char *s2);
@@ -56,6 +58,7 @@ void		option_parser(t_ping *ping);
 
 t_packet	*init_packet(void);
 t_ping		*init_ping(int argc, char **argv);
+void		set_header(t_packet *packet);
 
 void		sig_handler(int code);
 void		ft_exit(int code, t_ping *ping, t_packet *packet);
