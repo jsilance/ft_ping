@@ -36,6 +36,9 @@ void ft_exit(int code, t_ping *ping, t_packet *packet)
 		case HELP_ERROR:
 			print_help();
 			break;
+		case SOCKET_ERROR:
+			printf("Socket error.\n");
+			break;
 		default:
 			printf("Usage: ./ft_ping <option> <host>\n");
 			break;

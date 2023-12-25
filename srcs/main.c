@@ -10,8 +10,11 @@ void sig_handler(int code)
 		gettimeofday(&g_ping->end, NULL);
 		printf("\n--- %s ping statistics ---\n", g_ping->host);
 		printf("%d packets transmitted, %d received, %d%% packet loss, time %ldms\n",
-				g_packet->seq, 0, 0, (long int)get_time(g_ping->start, g_ping->end));
-		printf("rtt min/avg/max/mdev = %d/%d/%d/%d ms\n",
+				g_ping->packet_transmitted, g_ping->packet_received,
+				(g_ping->packet_transmitted / g_ping->packet_loss * 100),
+				(long int)get_time(g_ping->start, g_ping->end));
+		if (g_ping->packet_received > 0)
+			printf("rtt min/avg/max/mdev = %d/%d/%d/%d ms\n",
 				0, 0, 0, 0);
 		ft_exit(NO_ERROR, g_ping, g_packet);
 	}
@@ -38,12 +41,16 @@ int main(int argc, char **argv)
 	if (!g_packet)
 		ft_exit(MALLOC_ERROR, g_ping, NULL);
 
-	// define fd of socket
-	g_ping->socket_fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+	g_ping->socket_fd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (g_ping->socket_fd < 0)
-		ft_exit(UNKNOWN_ERROR, g_ping, g_packet);
-	// define protocol and type of socket
+		ft_exit(SOCKET_ERROR, g_ping, g_packet);
 
+	struct timeval tv = {1, 0};
+	
+	if (setsockopt(g_ping->socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) == -1)
+		ft_exit(SOCKET_ERROR, g_ping, g_packet);
+
+	g_ping->addr.sin_family = AF_INET;
 	ft_ping(g_ping, g_packet);
 	ft_exit(NO_ERROR, g_ping, g_packet);
 	return (0);
