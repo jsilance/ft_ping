@@ -42,8 +42,6 @@ int main(int argc, char **argv)
 		ft_exit(MALLOC_ERROR, g_ping, NULL);
 
 	g_ping->socket_fd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
-	perror("THERE:");
-	printf("[%d]\n", g_ping->socket_fd);
 	if (g_ping->socket_fd < 0)
 		ft_exit(SOCKET_ERROR, g_ping, g_packet);
 

@@ -6,8 +6,10 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <unistd.h>
+
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <netinet/ip_icmp.h>
 
 #define PACKET_SIZE     64
 #define IP_HEADER_SIZE  20
@@ -50,7 +52,7 @@ typedef struct	s_packet
 {
 	int				seq;
 
-	char			header[8];
+	struct icmphdr	header;
 
 	struct timeval	start;
 	struct timeval	end;

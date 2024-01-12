@@ -5,9 +5,11 @@ void ft_ping(t_ping *ping, t_packet *packet)
 	int ret;
 	struct msghdr msg;
 	struct iovec iov;
+	struct timeval tv = {1, 0};
+	
 
 	ret = 0;
-	iov.iov_base = packet->header;
+	iov.iov_base = &packet->header;
 	iov.iov_len = sizeof(packet->header);
 
 	ft_bzero(&msg, sizeof(msg));
@@ -22,13 +24,19 @@ void ft_ping(t_ping *ping, t_packet *packet)
 	
 	while (1)
 	{
-		if (sendto(ping->socket_fd, packet->header, ICMP_HEADER_SIZE + PACKET_SIZE,
+		if (sendto(ping->socket_fd, &packet->header, ICMP_HEADER_SIZE + PACKET_SIZE,
 			0, (struct sockaddr *)&ping->addr, sizeof(ping->addr)) != ICMP_HEADER_SIZE + PACKET_SIZE)
 				ft_exit(UNKNOWN_ERROR, ping, packet);
 		gettimeofday(&packet->start, NULL);
 		ping->packet_transmitted++;
+
+		setsockopt(ping->socket_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
 		ret = recvmsg(ping->socket_fd, &msg, 0);
-		if (ret == ICMP_HEADER_SIZE + PACKET_SIZE)
+		printf("ret: %d\n", ret);
+		perror("recvmsg");
+		// if (ret == ICMP_HEADER_SIZE + PACKET_SIZE)
+		if (ret > 0)
 		{
 			gettimeofday(&packet->end, NULL);
 			ping->packet_received++;
@@ -40,7 +48,7 @@ void ft_ping(t_ping *ping, t_packet *packet)
 			ping->packet_loss++;
 			printf("From %s icmp_seq=%d Destination Host Unreachable\n", ping->host, packet->seq);
 		}
-		usleep(1000000);
+		// usleep(1000000);
 
 		packet->seq++;
 	}
