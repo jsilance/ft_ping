@@ -52,7 +52,7 @@ typedef struct	s_packet
 {
 	int				seq;
 
-	struct icmphdr	header;
+	unsigned int	header;
 
 	struct timeval	start;
 	struct timeval	end;
@@ -62,6 +62,7 @@ typedef struct	s_packet
 int			ft_strcmp(const char *s1, const char *s2);
 void		ft_bzero(void *str, size_t n);
 size_t		ft_strlen(const char *str);
+void		print_bin(unsigned int n);
 
 long double get_time(struct timeval start, struct timeval end);
 

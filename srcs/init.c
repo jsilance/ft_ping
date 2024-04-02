@@ -2,12 +2,16 @@
 
 void set_header(t_packet *packet)
 {
-	packet->header.type = ICMP_ECHO;
-	packet->header.code = 0;
-	packet->header.un.echo.id = getpid();
-	packet->header.un.echo.sequence = packet->seq;
-	packet->header.checksum = 0;
-	packet->header.checksum = htons(0);
+	packet->header = 0;
+	print_bin(packet->header);
+	packet->header |= ICMP_ECHO << 24; // type
+	print_bin(packet->header);
+	packet->header |= 0 << 16; // code
+	print_bin(packet->header);
+	packet->header |= 0; // somme %256 du message
+	print_bin(packet->header);
+	packet->header |= 0;
+	print_bin(packet->header);
 }
 
 t_ping *init_ping(int argc, char **argv)
@@ -37,5 +41,6 @@ t_packet *init_packet(void)
 	ft_bzero(packet, sizeof(t_packet));
 	packet->seq = 1;
 	set_header(packet);
+
 	return (packet);
 }
