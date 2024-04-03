@@ -9,12 +9,12 @@ void ft_ping(t_ping *ping, t_packet *packet)
 	
 
 	ret = 0;
-	iov.iov_base = &packet->header;
-	iov.iov_len = sizeof(packet->header);
+	// iov.iov_base = &packet->header;
+	// iov.iov_len = sizeof(packet->header);
 
 	ft_bzero(&msg, sizeof(msg));
-	msg.msg_iov = &iov;
-	msg.msg_iovlen = 1;
+	// msg.msg_iov = &iov;
+	// msg.msg_iovlen = 1;
 
 	if (inet_pton(AF_INET, ping->host, &ping->addr.sin_addr) <= 0)
 		ft_exit(INVALID_HOST, ping, packet);
@@ -24,7 +24,9 @@ void ft_ping(t_ping *ping, t_packet *packet)
 	
 	while (1)
 	{
-		if (sendto(ping->socket_fd, &packet->header, ICMP_HEADER_SIZE + PACKET_SIZE,
+		printf("%s\n", packet->data);
+		// if (sendto(ping->socket_fd, packet->data, ICMP_HEADER_SIZE + PACKET_SIZE,
+		if (sendto(ping->socket_fd, packet->data, ICMP_HEADER_SIZE,
 			0, (struct sockaddr *)&ping->addr, sizeof(ping->addr)) != ICMP_HEADER_SIZE + PACKET_SIZE)
 				ft_exit(UNKNOWN_ERROR, ping, packet);
 		gettimeofday(&packet->start, NULL);

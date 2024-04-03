@@ -2,16 +2,10 @@
 
 void set_header(t_packet *packet)
 {
-	packet->header = 0;
-	print_bin(packet->header);
-	packet->header |= ICMP_ECHO << 24; // type
-	print_bin(packet->header);
-	packet->header |= 0 << 16; // code
-	print_bin(packet->header);
-	packet->header |= 0; // somme %256 du message
-	print_bin(packet->header);
-	packet->header |= 0;
-	print_bin(packet->header);
+	packet->data[0] = 0;
+	packet->data[1] = ICMP_ECHO; // type
+	packet->data[2] = 0 ; // checksum
+	packet->data[3] = 0; // checksum somme %256 du message
 }
 
 t_ping *init_ping(int argc, char **argv)

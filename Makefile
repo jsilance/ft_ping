@@ -25,7 +25,7 @@ LDFLAGS		= -I./srcs
 
 CC			= gcc
 
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g -g3 -fsanitize=address
 
 RM			= rm -f
 
