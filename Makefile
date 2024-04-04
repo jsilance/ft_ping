@@ -5,7 +5,7 @@ NAME		= ft_ping
 # ============================================================================= #
 
 SRCS		= main.c ft_strcmp.c ft_bzero.c init.c ft_error.c ft_ping.c \
-				parsing.c ft_strlen.c \
+				parsing.c ft_strlen.c link_list.c ft_checksum.c \
 
 # ============================================================================= #
 
@@ -19,13 +19,13 @@ ALL_OBJS	= $(BASE_OBJS)
 
 # ============================================================================= #
 
-LDFLAGS		= -I./srcs
+LDFLAGS		= -I./srcs -lm
 
 # ============================================================================= #
 
 CC			= gcc
 
-CFLAGS		= -Wall -Wextra -Werror -g -g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror
 
 RM			= rm -f
 

@@ -11,11 +11,10 @@ void sig_handler(int code)
 		printf("\n--- %s ping statistics ---\n", g_ping->host);
 		printf("%d packets transmitted, %d received, %d%% packet loss, time %ldms\n",
 				g_ping->packet_transmitted, g_ping->packet_received,
-				(g_ping->packet_transmitted / g_ping->packet_loss * 100),
+				(int)((double)g_ping->packet_loss / (double)g_ping->packet_transmitted * 100.0),
 				(long int)get_time(g_ping->start, g_ping->end));
 		if (g_ping->packet_received > 0)
-			printf("rtt min/avg/max/mdev = %d/%d/%d/%d ms\n",
-				0, 0, 0, 0);
+			time_min_max(g_ping);
 		ft_exit(NO_ERROR, g_ping, g_packet);
 	}
 }
@@ -37,7 +36,7 @@ int main(int argc, char **argv)
 		ft_exit(MALLOC_ERROR, NULL, NULL);
 	option_parser(g_ping);
 	
-	g_packet = init_packet();
+	g_packet = init_packet(g_ping);
 	if (!g_packet)
 		ft_exit(MALLOC_ERROR, g_ping, NULL);
 

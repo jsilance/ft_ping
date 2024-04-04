@@ -11,7 +11,6 @@ static void print_help(void)
 
 void ft_exit(int code, t_ping *ping, t_packet *packet)
 {
-	perror("ft_ping:");
 	switch (code)
 	{
 		case NO_ERROR:
@@ -39,8 +38,6 @@ void ft_exit(int code, t_ping *ping, t_packet *packet)
 			break;
 		case SOCKET_ERROR:
 			printf("Socket error.\n");
-			// char a = ((char *)0)[2];
-			// (void)a;
 			break;
 		default:
 			printf("Usage: ./ft_ping <option> <host>\n");
@@ -51,6 +48,7 @@ void ft_exit(int code, t_ping *ping, t_packet *packet)
 	if (ping)
 	{
 		close(ping->socket_fd);
+		ft_lstclear(&ping->time_list, free);
 		ft_bzero(ping, sizeof(t_ping));
 		free(ping);
 	}
